@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs= await Blog
-  .find({}).populate('user')
-  //) { username: 1, name: 1 })
-  response.json(blogs.map(blog=>blog.toJSON()))
+  .find({})
+  console.log(blogs)
+ response.json(blogs.map(blog=>blog.toJSON()))
   
 })
 
@@ -16,6 +16,7 @@ blogsRouter.get('/:id', async (request, response) => {
   response.json(blog)
   
 })
+
 
   
  blogsRouter.post('/', async (request, response) => {
@@ -48,6 +49,7 @@ blogsRouter.get('/:id', async (request, response) => {
     const saved = await blog.save()
     user.blogs = user.blogs.concat(saved._id)
     await user.save()
+
     response.json(saved)
   })
 
@@ -57,19 +59,18 @@ blogsRouter.get('/:id', async (request, response) => {
     const user = request.user
     const blog = await Blog.findById(request.params.id) 
 
-  if (blog.user.toString() === user.id.toString()) {
-   await Blog.findByIdAndRemove(request.params.id)
-   response.status(204).end()
+  if  (blog.user.toString() === user.id.toString()) {
+     user.blogs = user.blogs.filter(x => x.toString() !== blog.id.toString())
+     await Blog.findByIdAndRemove(request.params.id)
+     await user.save()
+     response.status(204).end()
   } else {
     response.status(400).json({
       error: 'user not allowed to delete the bog'
     })
-  }
-  
-   
+  }  
  })
   
-
  blogsRouter.put('/:id', async (request, response) => {
    const body = request.body
 
@@ -80,8 +81,8 @@ blogsRouter.get('/:id', async (request, response) => {
     likes: body.likes
   }
 
-  await Blog.findByIdAndUpdate(request.params.id, updated, { new: true})
-  response.status(204).end()
+  const newBlog = await Blog.findByIdAndUpdate(request.params.id, updated, { new: true})
+  response.json(newBlog)
 
  })
   
