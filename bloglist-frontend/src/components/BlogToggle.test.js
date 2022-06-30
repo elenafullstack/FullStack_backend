@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import BlogToggle from './BlogToggle'
+import BlogDetails from './BlogDetails'
 
 
 const blog = {
@@ -16,24 +17,27 @@ const blog = {
 
    const component = render(
       <BlogToggle blog = {blog}>
-        <div className="testDiv"/>
+        <BlogDetails  blog = {blog} url = {blog.url} likes = {blog.likes}/>
       </BlogToggle>
     )
     const div = component.container.querySelector('.content')
     expect(div).toHaveStyle('display: none')
+
+   
  })
 
 test('after clicking the button, shows also url and likes', () => {
 
   const component = render(
     <BlogToggle blog = {blog}>
-      <div className="testDiv"/>
+      <BlogDetails  blog = {blog} url = {blog.url} likes = {blog.likes}/>
     </BlogToggle>
   )
     const button = component.container.querySelector('button')
     fireEvent.click(button)
     const div = component.container.querySelector('.content')
     expect(div).not.toHaveStyle('display: none')
+
 
 })
 
