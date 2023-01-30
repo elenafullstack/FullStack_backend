@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVsdHN1YmFiZSIsImlkIjoiNjFiYjM3ZGRiMTljMWIwYzJlNGI2MjZmIiwiaWF0IjoxNjQ2OTg0OTI0fQ.lyc2XNUi1Rp0LqxSSrznW2wTX5RLXs0sFpr0i1CRbHI
+
+{
+   "author" : "Backend works",
+   "title" : "delete later", 
+   "url" : "https://www.facebook.com/",
+   "likes" : 7
+}
